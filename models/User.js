@@ -27,6 +27,17 @@ const UserSchema = Schema({
         required: true,
         default: false,
     },
+    estado: {
+        type: Boolean,
+        default: true
+    }
+});
+
+// ? filter and return only the fields that we want
+UserSchema.method("toJSON", function() {
+    const { __v, _id, ...object } = this.toObject();
+    object.id = _id;
+    return object;
 });
 
 module.exports = model("User", UserSchema);

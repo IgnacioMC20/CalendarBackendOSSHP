@@ -21,7 +21,6 @@ router.get('/', [
 // ? Crear un nuevo evento
 router.post('/', [
     check('title', 'title is required').not().isEmpty(),
-    check('notes', 'notes are required').not().isEmpty(),
     check('start', 'Start date is not valid').custom(isDate),
     check('end', 'End date is not valid').custom(isDate),
     validarCampos

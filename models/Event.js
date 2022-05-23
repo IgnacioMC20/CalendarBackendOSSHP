@@ -8,15 +8,15 @@ const EventSchema = Schema({
     },
     notes: {
         type: String,
-        required: true
+        // required: true
     },
     start: {
         type: Date,
-        required: true
+        // required: true
     },
     end: {
         type: Date,
-        unique: true
+        // unique: true
     },
     // ? referencia a otra coleccion
     user: {

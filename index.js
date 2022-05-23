@@ -20,9 +20,10 @@ app.use(express.static('public'));
 // ? Lectura y parseo del body
 app.use(express.json());
 
-// ?  Rutas
+// ? Rutas
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/events', require('./routes/events'));
+app.use('/api/users', require('./routes/users'));
 
 // Todo: Crud: eventos
 
