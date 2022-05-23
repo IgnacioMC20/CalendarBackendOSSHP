@@ -12,10 +12,19 @@ const getUsers = async(req, res) => {
             });
         }
         
+        const usersList = users.map( user => {
+            const { password, id, lastname, ...rest } = user.toJSON();
+            rest.name = rest.name + ' ' + lastname;
+            rest.estado = rest.estado ? 'Activo' : 'Inactivo';
+            rest.isAdmin = rest.isAdmin ? 'Si' : 'No';
+            return rest;
+        }); 
+
         return res.json({
             ok: true,
-            users
+            users: usersList
         })
+
     } catch (error) {
         console.log(error);
         res.status(500).json({
