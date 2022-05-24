@@ -27,7 +27,7 @@ const createUser = async (req, res = response) => {
         await user.save();
 
         // ? Generate token
-        const token = await generateJWT(user.id, user.name);
+        const token = await generateJWT(user.id, user.name, user.isAdmin);
         
         res.status(201).json({
             ok: true,
@@ -56,6 +56,13 @@ const loginUser = async(req, res = response) => {
     try {
         const user = await User.findOne({ username });
 
+        if(!user.estado){
+            return res.status(400).json({
+                ok: false,
+                msg: 'User is inactive'
+            });
+        }
+
         if (!user) {
             return res.status(400).json({
                 ok: false,
@@ -75,13 +82,14 @@ const loginUser = async(req, res = response) => {
         }
 
         // ? Generate token
-        const token = await generateJWT(user.id, user.name);
+        const token = await generateJWT(user.id, user.name, user.isAdmin);
 
         res.status(200).json({
             ok: true,
             uid: user.id,
             name: user.name,
             isAdmin: user.isAdmin,
+            username: user.username,
             token
         });
 
@@ -101,17 +109,27 @@ const renewToken = async(req, res = response) => {
     const { uid, name } = req;
 
     const user = await User.findById(uid);
+
     // console.log(user);
     if(user){
+
+        if(!user.estado){
+            return res.status(400).json({
+                ok: false,
+                msg: 'User is inactive'
+            });
+        }
+
         const isAdmin = user.isAdmin;
-        const token = await generateJWT(uid, name);
+        const token = await generateJWT(uid, name, isAdmin);
     
        return res.json({
             ok: true,
             token,
             uid,
             name,
-            isAdmin
+            isAdmin,
+            username: user.username
         });
     }
 }
