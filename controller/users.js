@@ -151,6 +151,10 @@ const editUserInfo = async(req, res) => {
                 msg: 'No existe el usuario'
             });
         }
+
+        delete user.password;
+        user.id = id;
+        
         res.json({
             ok: true,
             user: user,
